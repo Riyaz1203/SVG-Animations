@@ -1,0 +1,234 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/MotionPathPlugin.min.js" integrity="sha512-lhK7xTsFM6DPXOtQQyPe+NmpoFEheKDHjM/5QzpFRiE1KySgtBfEzYz4XowvB+CAWcBLBGWinhh41uNaOtrSZA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" integrity="sha512-onMTRKJBKz8M1TnqqDuGBlowlH0ohFzMXYRNebz+yOcc5TQr/zAKsthzhuv0hiyUKEiQEQXEynnXCvNTOk50dg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/TextPlugin.min.js" integrity="sha512-xAxjKW1J/R4TFytv43xvQ7jFTrJlBzsDOH/Aw0fFc2nvarQkE3d08lTicjzUsZJYDoHYDCpwsUUqOJXh34A1sw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://uploads-ssl.webflow.com/66acc625b5071273187efc25/66cc7e3eb3e2206914eb4082_DrawSVGPlugin.txt"></script>
+
+
+<script>
+      gsap.registerPlugin(MotionPathPlugin, DrawSVGPlugin);
+
+      gsap.to("#text-path", {
+        duration: 60,
+        repeat: -1,
+        ease: "linear",
+        attr: { startOffset: "100%" },
+      });
+</script>
+
+<!--COLOR CHANGING BORDER IN HOME SECTION 2-->
+<script>
+// Select all .features-block elements
+const featureBlocks = document.querySelectorAll(".features-block");
+
+featureBlocks.forEach(block => {
+    // Get the parent .gradient-border of the current .features-block
+    const gradientBorder = block.closest(".gradient-border");
+
+    let animation; // Variable to hold the GSAP animation instance
+
+    // Add event listener for mouseenter (hover)
+    block.addEventListener("mouseenter", () => {
+        // If the animation already exists, just resume it
+        if (animation) {
+            animation.play();
+        } else {
+            // Otherwise, create a new animation
+            animation = gsap.to(gradientBorder, {
+                duration: 3,
+                backgroundImage: "linear-gradient(360deg, #8080ff, #fff1f1)",
+                ease: "linear",
+                repeat: -1,
+                paused: true, // Start paused
+                onUpdate: function() {
+                    const angle = (this.progress() * 360) % 360;
+                    gsap.set(gradientBorder, {
+                        backgroundImage: `linear-gradient(${angle}deg, #8080ff, #fff1f1)`
+                    });
+                }
+            });
+
+            // Play the animation
+            animation.play();
+        }
+    });
+
+    // Add event listener for mouseleave to pause the animation
+    block.addEventListener("mouseleave", () => {
+        if (animation) {
+            animation.pause(); // Pause the ongoing animation
+        }
+    });
+});
+</script>
+
+<!--SWIPER IN MOBILE SECTION-->
+ <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+<!-- Mobile Display Slider -->
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    var swiper = new Swiper('.swiper', {
+      slidesPerView: 1.2, // Default for mobile
+      spaceBetween: 16, // Reduced margin for mobile
+      direction: 'horizontal',
+      autoplay: {
+        delay: 3000,
+        disableOnInteraction: false,
+      },
+      navigation: {
+        nextEl: '.left-arrow',
+        prevEl: '.right-arrow',
+      },
+      breakpoints: {
+        // Breakpoint for tablets
+        768: {
+          slidesPerView: 2,
+          spaceBetween: 20,
+        },
+        // Breakpoint for larger screens
+        1024: {
+          slidesPerView: 3,
+          spaceBetween: 30,
+        }
+      },
+    });
+  });
+</script>
+
+
+
+
+
+<!-- Testimonial Slider Animation -->
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  var swiper = new Swiper('.testimonial-swiper', {
+    slidesPerView: 1,
+    spaceBetween: 30,
+    direction: 'horizontal',
+    loop: true,
+      autoplay: {
+        delay: 3000,
+        disableOnInteraction: false,
+      },
+    navigation: {
+      nextEl: '.testimonial-right-arrow',
+      prevEl: '.testimonial-left-arrow',
+    },
+  });
+});
+</script>
+
+
+<!-- Home Page Wave Animation -->
+<script>
+const wavePath = document.querySelector('.animate-home-wave');
+
+gsap.from(wavePath, {
+    duration: 2,
+		drawSVG: "100% 100%",
+    ease: "power1.inOut",
+});
+</script>
+
+
+<!-- Home Page 2 Arrow Animation -->
+<script>
+gsap.registerPlugin(ScrollTrigger, DrawSVGPlugin);
+
+function setupPathAnimation(pathId, parentTrigger, delay = 0) {
+    var curlyPath = document.querySelector(pathId);
+    var curlypathLength = curlyPath.getTotalLength();
+    
+    gsap.set(curlyPath, { drawSVG: "0%" }); // Set initial state of the path
+
+    gsap.to(curlyPath, {
+        drawSVG: "100%",  // Animate the path from 0% to 100%
+        duration: 1,
+        delay: delay,  // Apply delay here
+        scrollTrigger: {
+            trigger: parentTrigger,
+            start: "top 70%",
+        }
+    });
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    var parentTrigger = ".home-feature-blocks";
+    setupPathAnimation("#curly-arrow-1", parentTrigger);
+    setupPathAnimation("#curly-arrow-2", parentTrigger, 1);
+    setupPathAnimation("#arrow-down-1", parentTrigger);
+    setupPathAnimation("#arrow-down-2", parentTrigger, 1);
+    setupPathAnimation("#arrow-up-1", parentTrigger);
+    setupPathAnimation("#arrow-up-2", parentTrigger, 1);
+});
+</script>
+
+
+
+
+
+<!-- Home Page Mobile and Text Boxes and Arrow Animation -->
+
+<script>
+   gsap.timeline()
+     .from(".hero-mobile-img", { duration: 1.5, x: '50px',opacity:0, ease: "power2.out" })
+     .from(".left-msg", { duration: 1, x: '50px',opacity:0, ease: "power2.out" }, "-=0.5")
+     .from(".right-msg", { duration: 1, x: '50px',opacity:0, ease: "power2.out" }, "-=0.5")
+		 .from("#home-text-block1", { duration: 1, opacity: 0, x: 20, ease: "power2.out" }, "-=0.5")
+     .from("#home-text-block2", { duration: 1, opacity: 0, x: 20, ease: "power2.out" }, "-=0.5");
+</script>
+<script>
+    function setuupPathAnimation(pathId, delay = 0) {
+    var homecurlyPath = document.querySelector(pathId);
+    var homecurlypathLength = homecurlyPath.getTotalLength();
+    homecurlyPath.style.strokeDasharray = homecurlypathLength;
+    homecurlyPath.style.strokeDashoffset = homecurlypathLength;
+
+    gsap.to(homecurlyPath, { duration: 1, strokeDashoffset: 0, delay: delay });
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    setuupPathAnimation("#curly-arrow-top1");
+    setuupPathAnimation("#curly-arrow-top2", 1);
+});
+
+</script>
+
+
+<!--Switch Up Section Animation -->
+<script>
+    const tl = gsap.timeline({
+        scrollTrigger: {
+            trigger: ".switch-up-section",
+            start: "top 80%",
+            end: "bottom 20%",
+        },
+        repeat: -1,
+        yoyo: true
+    });
+
+    tl.to(".text111", { opacity: 1, duration: 0.2 })
+      .to(".text112", { opacity: 1, duration: 0.2 })
+      .to(".text113", { opacity: 1, duration: 0.2 })
+      .to(".text114", { opacity: 1, duration: 0.2 })
+      .to(".text115", { opacity: 1, duration: 0.2 })
+      .to(".text111", { opacity: 0, duration: 0.2, delay: 0.5 })
+      .to(".text112", { opacity: 0, duration: 0.2 })
+      .to(".text113", { opacity: 0, duration: 0.2 })
+      .to(".text114", { opacity: 0, duration: 0.2 })
+      .to(".text115", { opacity: 0, duration: 0.2 });
+
+    const tll = gsap.timeline({
+        scrollTrigger: {
+            trigger: ".switch-up-section",
+            start: "top 80%",
+            end: "bottom 20%",
+        }
+    });
+
+    tll.from(".switch-up-col-1-features1", { opacity: 0, y: 50, duration: 0.5 })
+       .from(".switch-up-col-1-features2", { opacity: 0, y: 50, duration: 0.5 })
+       .from(".switch-up-col-1-features3", { opacity: 0, y: 50, duration: 0.5 });
+</script>
